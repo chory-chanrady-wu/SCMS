@@ -1,8 +1,11 @@
 <div class="background-image">
   <header class="navbar">
     <div class="logo">Smart Campus Management System</div>
+      <ul class="nav-links" *ngIf="isLoggedIn()">
+        <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
+        <li><a (click)="logout()">Logout</a></li>
+      </ul>
   </header>
-
   <main class="content">
     <router-outlet></router-outlet>
   </main>

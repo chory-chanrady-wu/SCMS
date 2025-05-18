@@ -1,15 +1,27 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login.component';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router'; // ✅ Import Router
 
-const routes: Routes = [
-  {
-    path: '',
-    loadComponent: () => import('./login.component').then(m => m.LoginComponent)
-  }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html'
 })
-export class LoginModule {}
+export class LoginComponent {
+  username = '';
+  password = '';
+  errorMessage = '';
+
+  constructor(private router: Router) {}
+
+  login() {
+    // Dummy example: Replace this with real auth logic
+    if (this.username === 'admin' && this.password === 'admin') {
+      // For now, still redirect admin to home
+      this.router.navigate(['/home']);
+    } else if (this.username && this.password) {
+      // Login success for any user
+      this.router.navigate(['/home']); // ✅ Redirect to /home
+    } else {
+      this.errorMessage = 'Invalid username or password';
+    }
+  }
+}
