@@ -1,0 +1,11 @@
+.profile-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  max-width: 400px;
+  background-color: #fafafa;
+}
+.profile-card h2 {
+  margin: 0 0 16px;
+  font-size: 24px;
+}
