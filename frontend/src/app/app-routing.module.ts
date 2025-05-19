@@ -11,11 +11,11 @@ export const appRoutes: Routes = [
     path: 'home',
     loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
   },
+  
   {
   path: 'profile',
-  loadComponent: () => import('./components/profile/profile.component').then(m => m.ProfileComponent)
-  }
-,
+  loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule)
+  },
   {
     path: 'admin',
     canActivate: [RoleGuard],
@@ -30,6 +30,12 @@ export const appRoutes: Routes = [
     path: 'faculty',
     canActivate: [RoleGuard],
     loadChildren: () => import('./components/faculty/faculty.module').then(m => m.FacultyModule)
+  },
+  {
+  path: 'room-booking',
+  canActivate: [RoleGuard],
+  data: { roles: ['admin', 'faculty'] },
+  loadComponent: () => import('./components/room-booking/room-booking.component').then(m => m.RoomBookingComponent)
   }
-
+  // Add more routes as needed
 ];

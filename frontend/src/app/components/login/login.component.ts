@@ -21,20 +21,21 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    this.authService.login(this.username, this.password).subscribe({
-      next: (res: { role: any; }) => {
-        this.successMessage = 'Login successful';
-        const role = res.role;
-        if (role === 'admin') this.router.navigate(['/admin']);
-        else if (role === 'student') this.router.navigate(['/student']);
-        else if (role === 'faculty') this.router.navigate(['/faculty']);
-        else this.router.navigate(['/home']);
-      },
-      error: () => {
-        this.errorMessage = 'Invalid credentials';
-      }
-    });
-  }
+  this.authService.login(this.username, this.password).subscribe({
+    next: (res) => {
+      this.successMessage = 'Login successful';
+      const role = res.role;
+      if (role === 'admin') this.router.navigate(['/admin']);
+      else if (role === 'student') this.router.navigate(['/student']);
+      else if (role === 'faculty') this.router.navigate(['/faculty']);
+      else this.router.navigate(['/home']);
+    },
+    error: (err) => {
+      this.errorMessage = 'Invalid credentials';
+    }
+  });
+}
+
 
   clearMessages() {
     this.errorMessage = '';

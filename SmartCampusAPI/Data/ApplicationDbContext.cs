@@ -47,6 +47,15 @@ namespace SmartCampusAPI.Data
                 .WithMany()
                 .HasForeignKey(e => e.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    Username = "admin",
+                    PasswordHash = "admin",
+                    Role = "admin"
+                }
+            );
         }
     }
 }
