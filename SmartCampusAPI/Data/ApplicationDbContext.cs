@@ -14,6 +14,7 @@ namespace SmartCampusAPI.Data
         public DbSet<ExamResult> ExamResults { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Timetable> Timetables { get; set; }
+        public DbSet<RoomBooking> RoomBookings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
