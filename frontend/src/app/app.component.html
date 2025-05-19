@@ -1,20 +1,23 @@
 <div class="background-image">
-  <header class="navbar" *ngIf="isLoggedIn()">
+  <!-- Header: shown only when logged in AND not on /login -->
+  <header class="navbar" *ngIf="isLoggedIn() && !isLoginPage()">
     <div class="logo">Smart Campus Management System</div>
     <ul class="nav-links">
       <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
-      <li *ngIf="getRole() === 'admin'"><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
-      <li *ngIf="getRole() === 'faculty'"><a routerLink="/faculty" routerLinkActive="active">Faculty</a></li>
-      <li *ngIf="getRole() === 'student'"><a routerLink="/student" routerLinkActive="active">Student</a></li>
-      <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
+      <li *ngIf="getRole() === 'admin'"><a routerLink="/admin">Admin</a></li>
+      <li *ngIf="getRole() === 'faculty' || getRole() === 'admin'"><a routerLink="/faculty">Faculty</a></li>
+      <li *ngIf="getRole() === 'student' || getRole() === 'admin'"><a routerLink="/student">Student</a></li>
+      <li><a routerLink="/profile">Profile</a></li>
       <li><a (click)="logout()">Logout</a></li>
     </ul>
   </header>
 
+  <!-- Main content -->
   <main class="content">
     <router-outlet></router-outlet>
   </main>
 
+  <!-- Footer: Always visible and sticky -->
   <footer class="footer">
     © 2025 Smart Campus. All rights reserved.
   </footer>

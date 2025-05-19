@@ -1,16 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
- export class AppComponent {
-  constructor(private router: Router) {}
+export class AppComponent {
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.cdr.detectChanges(); // 🔄 force re-checks for *ngIf
+      }
+    });
+  }
 
   getRole(): string {
     return localStorage.getItem('role') || '';
@@ -18,6 +25,10 @@ import { Router, RouterOutlet } from '@angular/router';
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
+  }
+
+  isLoginPage(): boolean {
+    return this.router.url === '/login';
   }
 
   logout(): void {

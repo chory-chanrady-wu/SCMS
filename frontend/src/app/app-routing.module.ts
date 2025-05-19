@@ -13,8 +13,8 @@ export const appRoutes: Routes = [
   },
   
   {
-  path: 'profile',
-  loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule)
+    path: 'profile',
+    loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule)
   },
   {
     path: 'admin',
@@ -29,7 +29,7 @@ export const appRoutes: Routes = [
   {
     path: 'faculty',
     canActivate: [RoleGuard],
-    loadChildren: () => import('./components/faculty/faculty.module').then(m => m.FacultyModule)
+    loadComponent: () => import('./components/faculty/faculty.component').then(m => m.FacultyComponent)
   },
   {
   path: 'room-booking',

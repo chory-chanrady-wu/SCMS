@@ -47,17 +47,20 @@ namespace SmartCampusAPI.Data
                 .WithMany()
                 .HasForeignKey(e => e.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<User>().HasData(
-                new User
+            modelBuilder.Entity<User>().HasData(new User
                 {
-                    Id = 1,
-                    Username = "admin",
-                    PasswordHash = "admin",
-                    Role = "admin"
-                }
-            );
+                    Id = 2,
+                    Username = "chory.chanrady",
+                    PasswordHash = "Chandy@11032002",
+                    Role = "Faculty"
+                });
         }
     }
+
+    internal class BCrypt
+    {
+    }
+
 }
 // Compare this snippet from SmartCampusAPI/Models/Notification.cs:
 // public class Notification
