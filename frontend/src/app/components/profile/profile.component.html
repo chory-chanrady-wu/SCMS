@@ -1,7 +1,5 @@
-<h2>My Profile</h2>
-
-<div class="profile-card">
-  <p><strong>Name:</strong> John Doe</p>
-  <p><strong>Email:</strong> john.doe&#64;example.com</p>
-  <p><strong>Role:</strong> Student</p>
+<div class="profile-container" *ngIf="user">
+  <h2>Welcome, {{ user.username }}</h2>
+  <p><strong>Role:</strong> {{ user.role }}</p>
+  <p><strong>User ID:</strong> {{ user.id }}</p>
 </div>

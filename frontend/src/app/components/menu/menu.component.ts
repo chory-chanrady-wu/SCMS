@@ -7,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './menu.component.css'
 })
 export class MenuComponent {
+  [x: string]: any;
+  logout() {
+    localStorage.clear();
+    window.location.href = '/login';
+  }
 
 }

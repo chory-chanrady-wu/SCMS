@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProfileService } from '../../services/profile.service';
 
 @Component({
   selector: 'app-profile',
-  imports: [],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
+  user: any;
 
+  constructor(private profileService: ProfileService) {}
+
+  ngOnInit(): void {
+    this.profileService.getProfile().subscribe({
+      next: (data) => this.user = data,
+      error: (err) => console.error('Failed to load profile:', err)
+    });
+  }
 }

@@ -1,5 +1,7 @@
-<div class="home-container">
+<div class="centered-box" *ngIf="userRole === 'pending'">
   <h1>Welcome to Smart Campus Management</h1>
   <p>You have successfully logged in.</p>
-  <p>Waiting for admin to assign your role...</p>
+  <p><strong>Waiting for admin to assign your role...</strong></p>
+
+  <button (click)="manualRefresh()">🔄 Refresh</button>
 </div>

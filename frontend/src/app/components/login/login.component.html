@@ -1,24 +1,22 @@
 <div class="login-container">
-  <form (ngSubmit)="login()">
+  <form (ngSubmit)="login()" #loginForm="ngForm">
     <h2>Login</h2>
 
     <label>
       Username:
-      <input [(ngModel)]="username" name="username" required />
+      <input [(ngModel)]="username" name="username" required (input)="clearMessages()" />
     </label>
     <br />
 
     <label>
       Password:
-      <input [(ngModel)]="password" name="password" type="password" required />
+      <input [(ngModel)]="password" name="password" type="password" required (input)="clearMessages()" />
     </label>
     <br />
 
-    <button type="submit">Login</button>
+    <button type="submit" [disabled]="loginForm.invalid">Login</button>
 
     <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-    <!-- <p *ngIf="successMessage" class="success">{{ successMessage }}</p>-->
+    <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
   </form>
 </div>
-<!-- <div class="login-container">
- -->  

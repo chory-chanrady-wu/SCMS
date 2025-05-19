@@ -1,19 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { MenuComponent } from './menu.component';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-const routes: Routes = [
-  { path: '', component: MenuComponent }
-];
-
-@NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MenuComponent
-  ]
+@Component({
+  selector: 'app-menu',
+  standalone: true,
+  imports: [RouterModule],
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.css']
 })
-export class MenuModule { }
-// This module defines a MenuModule that imports CommonModule and RouterModule.
-// It declares a MenuComponent and sets up a route for it.
+export class MenuComponent {
+  role = localStorage.getItem('role');
+}
+// This component is responsible for displaying the menu based on the user's role.
+// It uses Angular's RouterModule to handle navigation.

@@ -1,0 +1,21 @@
+{
+    "sqltools.connections": [
+        {
+            "connectionTimeout": 15,
+            "mssqlOptions": {
+                "appName": "SQLTools",
+                "useUTC": true,
+                "encrypt": false,
+                "trustServerCertificate": true
+            },
+            "previewLimit": 50,
+            "server": "CHORY-CHANRADY",
+            "port": 1433,
+            "driver": "MSSQL",
+            "name": "SmartCampusDB",
+            "database": "SmartCampusDB",
+            "username": "sa",
+            "password": "Chandy@11032002"
+        }
+    ]
+}

@@ -9,17 +9,22 @@ import { Router, RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title(title: any) {
-    throw new Error('Method not implemented.');
-  }
+ export class AppComponent {
   constructor(private router: Router) {}
 
-  logout(): void {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
+  getRole(): string {
+    return localStorage.getItem('role') || '';
   }
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
+  }
 }
+

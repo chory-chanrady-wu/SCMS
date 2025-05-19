@@ -1,53 +1,43 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
-  standalone: true,
   selector: 'app-login',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  imports: [CommonModule, FormsModule], // ✅ This is what was missing
+  // providers: [AuthService], // Remove this line if AuthService is already providedIn: 'root'
 })
 export class LoginComponent {
   username = '';
   password = '';
   errorMessage = '';
-  successMessage = ''; // ✅ ADD THIS
+  successMessage = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    if (this.username === 'admin' && this.password === 'admin') {
-      localStorage.setItem('token', 'admin-token'); // ✅ add this
-      localStorage.setItem('user', this.username);
-      localStorage.setItem('role', 'admin');
-      this.successMessage = 'Welcome admin!';
-      this.router.navigate(['/admin']);
-    } else if (this.username && this.password) {
-      localStorage.setItem('token', 'user-token'); // ✅ add this
-      localStorage.setItem('user', this.username);
-      localStorage.setItem('role', 'pending');
-      this.successMessage = 'Login successful. Awaiting role assignment.';
-      this.router.navigate(['/home']);
-    } else {
-      this.errorMessage = 'Invalid credentials';
-    }
-  }
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
-  }
-
-  logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('role');
-    this.router.navigate(['/login']);
+    this.authService.login(this.username, this.password).subscribe({
+      next: (res: { role: any; }) => {
+        this.successMessage = 'Login successful';
+        const role = res.role;
+        if (role === 'admin') this.router.navigate(['/admin']);
+        else if (role === 'student') this.router.navigate(['/student']);
+        else if (role === 'faculty') this.router.navigate(['/faculty']);
+        else this.router.navigate(['/home']);
+      },
+      error: () => {
+        this.errorMessage = 'Invalid credentials';
+      }
+    });
   }
 
   clearMessages() {
     this.errorMessage = '';
-    this.successMessage = ''; // ✅ ADD THIS
+    this.successMessage = '';
   }
 }

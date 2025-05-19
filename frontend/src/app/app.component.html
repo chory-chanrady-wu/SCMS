@@ -1,11 +1,16 @@
 <div class="background-image">
-  <header class="navbar">
+  <header class="navbar" *ngIf="isLoggedIn()">
     <div class="logo">Smart Campus Management System</div>
-      <ul class="nav-links" *ngIf="isLoggedIn()">
-        <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
-        <li><a (click)="logout()">Logout</a></li>
-      </ul>
+    <ul class="nav-links">
+      <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+      <li *ngIf="getRole() === 'admin'"><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
+      <li *ngIf="getRole() === 'faculty'"><a routerLink="/faculty" routerLinkActive="active">Faculty</a></li>
+      <li *ngIf="getRole() === 'student'"><a routerLink="/student" routerLinkActive="active">Student</a></li>
+      <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
+      <li><a (click)="logout()">Logout</a></li>
+    </ul>
   </header>
+
   <main class="content">
     <router-outlet></router-outlet>
   </main>
