@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartCampusAPI.Data;
 
@@ -11,9 +12,11 @@ using SmartCampusAPI.Data;
 namespace SmartCampusAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250520114428_UpdateHashedFacultyUser")]
+    partial class UpdateHashedFacultyUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,23 +106,18 @@ namespace SmartCampusAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NotificationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("TargetRole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
 
-                    b.HasIndex("NotificationId");
+                    b.HasKey("Id");
 
                     b.ToTable("Notifications");
                 });
@@ -249,6 +247,16 @@ namespace SmartCampusAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            Email = "",
+                            PasswordHash = "$2a$11$F3moFndjNGC5bsV6oDQVD.Xh8a0vxCCrUVdAfoek9RmdYcVMob1qi",
+                            Role = "Faculty",
+                            Username = "chory.chanrady"
+                        });
                 });
 
             modelBuilder.Entity("Attendance", b =>
@@ -284,13 +292,6 @@ namespace SmartCampusAPI.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Notification", b =>
-                {
-                    b.HasOne("Notification", null)
-                        .WithMany("Notifications")
-                        .HasForeignKey("NotificationId");
-                });
-
             modelBuilder.Entity("Student", b =>
                 {
                     b.HasOne("User", "User")
@@ -300,11 +301,6 @@ namespace SmartCampusAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Notification", b =>
-                {
-                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

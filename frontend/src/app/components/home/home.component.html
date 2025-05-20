@@ -1,7 +1,8 @@
-<div class="centered-box" *ngIf="userRole === 'pending'">
-  <h1>Welcome to Smart Campus Management</h1>
-  <p>You have successfully logged in.</p>
-  <p><strong>Waiting for admin to assign your role...</strong></p>
+<div class="home-container">
+  <h1>Welcome to Smart Campus Management System</h1>
+  <p>You are now logged in. Use the menu above to navigate through your modules.</p>
 
-  <button (click)="manualRefresh()">🔄 Refresh</button>
+  <div class="role-info">
+    <strong>Your role:</strong> {{ getRole() }}
+  </div>
 </div>

@@ -40,8 +40,8 @@ form {
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 2em;
+  margin-bottom: 50px;
+  font-size: 25px;
   color: #000000;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -55,20 +55,26 @@ input {
   width: 100%;
   padding: 8px;
   margin: 8px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 button {
-  width: 100%;
+  width: 30%;
   padding: 10px;
-  background-color: #30742d;
-  color: #fff;
+  background-color: #ffffff;
+  color: #000000;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-items: center;
+  justify-content: center;
 }
 
 button:hover {
-  background-color: #1a242f;
+  background-color: #007bff;
+  transform: scale(1.1);
 }
 
 .login-container {
@@ -76,4 +82,10 @@ button:hover {
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* space between buttons */
+  margin-top: 20px;
 }

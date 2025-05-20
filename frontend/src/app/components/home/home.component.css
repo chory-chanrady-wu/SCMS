@@ -1,24 +1,10 @@
-.centered-box {
-  background-color: rgba(0, 0, 0, 0.3);           /* Slightly lighter for more background visibility */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: white;
-  padding: 50px 40px;
-  border-radius: 15px;
-  max-width: 800px;
-  width: 90%;                                     /* Makes it responsive */
+.home-container {
   text-align: center;
-  margin: auto;                                   /* Center horizontally */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  padding: 40px;
+  color: #000000;
 }
-.centered-box h1 {
-  font-size: 2.5em;
-  margin-bottom: 20px;
-}
-h1 {
-  white-space: nowrap;
-}
-.centered-box p {
-  font-size: 1.2em;
-  margin-bottom: 20px;
+
+.role-info {
+  margin-top: 20px;
+  font-size: 1.1rem;
 }

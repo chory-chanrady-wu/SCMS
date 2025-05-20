@@ -16,6 +16,7 @@ C:\Users\CHORY Chanrady\Desktop\SCMS\SCMS\SmartCampusAPI\bin\Debug\net9.0\SmartC
 C:\Users\CHORY Chanrady\Desktop\SCMS\SCMS\SmartCampusAPI\bin\Debug\net9.0\SmartCampusAPI.pdb
 C:\Users\CHORY Chanrady\Desktop\SCMS\SCMS\SmartCampusAPI\bin\Debug\net9.0\Azure.Core.dll
 C:\Users\CHORY Chanrady\Desktop\SCMS\SCMS\SmartCampusAPI\bin\Debug\net9.0\Azure.Identity.dll
+C:\Users\CHORY Chanrady\Desktop\SCMS\SCMS\SmartCampusAPI\bin\Debug\net9.0\BCrypt.Net-Next.dll
 C:\Users\CHORY Chanrady\Desktop\SCMS\SCMS\SmartCampusAPI\bin\Debug\net9.0\Humanizer.dll
 C:\Users\CHORY Chanrady\Desktop\SCMS\SCMS\SmartCampusAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\CHORY Chanrady\Desktop\SCMS\SCMS\SmartCampusAPI\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll

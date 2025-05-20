@@ -19,23 +19,26 @@ export const appRoutes: Routes = [
   {
     path: 'admin',
     canActivate: [RoleGuard],
+    data: { roles: ['admin'] },
     loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule)
   },
   {
     path: 'student',
     canActivate: [RoleGuard],
+    data: { roles: ['student', 'admin'] },
     loadChildren: () => import('./components/student/student.module').then(m => m.StudentModule)
   },
   {
     path: 'faculty',
     canActivate: [RoleGuard],
+    data: { roles: ['faculty', 'admin'] },
     loadComponent: () => import('./components/faculty/faculty.component').then(m => m.FacultyComponent)
   },
   {
-  path: 'room-booking',
-  canActivate: [RoleGuard],
-  data: { roles: ['admin', 'faculty'] },
-  loadComponent: () => import('./components/room-booking/room-booking.component').then(m => m.RoomBookingComponent)
-  }
+    path: 'room-booking',
+    canActivate: [RoleGuard],
+    data: { roles: ['admin', 'faculty'] },
+    loadComponent: () => import('./components/room-booking/room-booking.component').then(m => m.RoomBookingComponent)
+  },
   // Add more routes as needed
 ];

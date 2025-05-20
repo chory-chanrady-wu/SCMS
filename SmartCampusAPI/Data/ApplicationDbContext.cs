@@ -30,30 +30,6 @@ namespace SmartCampusAPI.Data
                 .HasForeignKey(s => s.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Faculty>()
-                .HasOne(f => f.User)
-                .WithMany()
-                .HasForeignKey(f => f.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Attendance>()
-                .HasOne(a => a.Student)
-                .WithMany()
-                .HasForeignKey(a => a.StudentId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<ExamResult>()
-                .HasOne(e => e.Student)
-                .WithMany()
-                .HasForeignKey(e => e.StudentId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<User>().HasData(new User
-                {
-                    Id = 2,
-                    Username = "chory.chanrady",
-                    PasswordHash = "Chandy@11032002",
-                    Role = "Faculty"
-                });
         }
     }
 

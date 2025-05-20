@@ -9,8 +9,7 @@ import { AuthService } from '../../auth/auth.service';
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [CommonModule, FormsModule], // ✅ This is what was missing
-  // providers: [AuthService], // Remove this line if AuthService is already providedIn: 'root'
+  imports: [CommonModule, FormsModule]
 })
 export class LoginComponent {
   username = '';
@@ -21,21 +20,18 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-  this.authService.login(this.username, this.password).subscribe({
-    next: (res) => {
-      this.successMessage = 'Login successful';
-      const role = res.role;
-      if (role === 'admin') this.router.navigate(['/admin']);
-      else if (role === 'student') this.router.navigate(['/student']);
-      else if (role === 'faculty') this.router.navigate(['/faculty']);
-      else this.router.navigate(['/home']);
-    },
-    error: (err) => {
-      this.errorMessage = 'Invalid credentials';
-    }
-  });
-}
+    this.clearMessages();
 
+    this.authService.login(this.username, this.password).subscribe({
+      next: (res) => {
+        this.successMessage = 'Login successful';
+        this.router.navigate(['/home']); // ✅ Redirect all users to home
+      },
+      error: () => {
+        this.errorMessage = 'Invalid credentials';
+      }
+    });
+  }
 
   clearMessages() {
     this.errorMessage = '';

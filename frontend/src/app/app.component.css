@@ -11,25 +11,20 @@
 .content {
   flex: 1;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0);
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  background-color: rgba(223, 223, 223, 0);
 }
 
 .navbar {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgb(255, 255, 255);
   color: white;
   padding: 10px 20px;
   text-align: center;
 }
-
-.footer {
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  text-align: center;
-  padding: 10px;
-  font-size: 0.9rem;
-}
 .logo {
-  text-align: center;
+  text-align: center;;
   font-size: 30px;
   padding: 10px; 
 }
@@ -43,30 +38,40 @@
 }
 
 .nav-links a {
-  color: black;
+  color: rgb(0, 0, 0);
   background-color: rgba(255, 255, 255, 0.904); /* white with some transparency */
   text-decoration: none;
   font-weight: 500;
   padding: 6px 12px;
   border-radius: 6px;
+  box-shadow: 1px 1px 5px rgb(0, 0, 0);
   transition: background-color 0.3s ease;
   cursor: pointer;
+  display: inline-block;
+  transition: transform 0.2s ease-in-out;
 }
 
 .nav-links a:hover {
-  background-color: rgba(81, 114, 223, 0.993); /* more solid on hover */
+  background-color: rgb(0, 228, 57); /* more solid on hover */
+  transform: scale(1.1);
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  border-radius: 6px;
+  box-shadow: 1px 1px 5px rgb(0, 0, 0);
   padding: 10px 20px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgb(42, 69, 223);
 }
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+i {
+  max-width: 100%;
+  height: auto;
+  color: rgb(255, 0, 0);
 }

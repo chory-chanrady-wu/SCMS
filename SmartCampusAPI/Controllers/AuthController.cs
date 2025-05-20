@@ -1,5 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SmartCampusAPI.Data;
+using SmartCampusAPI.Hubs;
 using SmartCampusAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,30 +17,46 @@ namespace SmartCampusAPI.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        // In-memory user list for demonstration; replace with real DB logic
-        private static List<User> Users = new List<User>
-        {
-            new User { Id = 1, Username = "admin", PasswordHash = "admin", Role = "admin" }
-        };
-
         private readonly IConfiguration _config;
+        private readonly ApplicationDbContext _context;
+        private readonly IHubContext<NotificationHub> _hub;
 
-        public AuthController(IConfiguration config)
+
+        public AuthController(IConfiguration config, ApplicationDbContext context, IHubContext<NotificationHub> hub)
         {
             _config = config;
+            _context = context;
+            _hub = hub;
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] User login)
+        public async Task<IActionResult> Login([FromBody] LoginRequest login)
         {
-            var user = Users.FirstOrDefault(u => u.Username == login.Username && u.PasswordHash == login.PasswordHash);
-            if (user == null)
-                return Unauthorized("Invalid credentials");
+            if (string.IsNullOrEmpty(login.Username) || string.IsNullOrEmpty(login.Password))
+                return BadRequest("Username and password are required");
+
+            // Check if the user exists and verify the password
+            if (string.IsNullOrEmpty(login.Username) || string.IsNullOrEmpty(login.Password))
+                return BadRequest("Username and password are required");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == login.Username);
+
+            // 🧪 Debug output
+            Console.WriteLine("Received Username: " + login.Username);
+            Console.WriteLine("Received Password: " + login.Password);
+            Console.WriteLine("Found DB Hash: " + user?.PasswordHash);
+            Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("admin"));
+            Console.WriteLine("BCrypt result: " + BCrypt.Net.BCrypt.Verify(login.Password, user?.PasswordHash ?? ""));
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash))
+            return Unauthorized("Invalid credentials");
 
             var token = GenerateJwtToken(user);
             var refreshToken = GenerateRefreshToken();
+
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+            await _context.SaveChangesAsync();
 
             return Ok(new
             {
@@ -45,11 +66,10 @@ namespace SmartCampusAPI.Controllers
                 user.Role
             });
         }
-
         [HttpPost("refresh")]
-        public IActionResult Refresh([FromBody] RefreshRequest request)
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
         {
-            var user = Users.FirstOrDefault(u =>
+            var user = await _context.Users.FirstOrDefaultAsync(u =>
                 u.RefreshToken == request.RefreshToken &&
                 u.RefreshTokenExpiry > DateTime.UtcNow);
 
@@ -61,12 +81,20 @@ namespace SmartCampusAPI.Controllers
 
             user.RefreshToken = newRefresh;
             user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+            await _context.SaveChangesAsync();
 
             return Ok(new
             {
                 token = newJwt,
                 refreshToken = newRefresh
             });
+        }
+        [HttpPost("send")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SendNotification([FromBody] string message)
+        {
+            await _hub.Clients.All.SendAsync("ReceiveNotification", message);
+            return Ok(new { status = "sent", message });
         }
 
         private string GenerateJwtToken(User user)

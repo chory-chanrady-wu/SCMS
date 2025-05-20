@@ -6,11 +6,12 @@ import { FooterComponent } from './components/footer/footer.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FooterComponent],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+notifications: any;
   constructor(private router: Router, private cdr: ChangeDetectorRef) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -20,8 +21,9 @@ export class AppComponent {
   }
 
   getRole(): string {
-    return localStorage.getItem('role') || '';
+    return (localStorage.getItem('role') || '').toLowerCase();
   }
+
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
@@ -36,6 +38,16 @@ export class AppComponent {
     localStorage.removeItem('role');
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
+  }
+  isAdmin(): boolean {
+    return this.getRole() === 'admin';
+  }
+
+  ngOnInit(): void {
+    this.notifications.startConnection();
+    this.notifications.onNotification((msg: string) => {
+      alert('🔔 New Notification: ' + msg);
+    });
   }
 }
 

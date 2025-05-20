@@ -1,12 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+
 public class Notification
 {
     public int Id { get; set; }
+    public string Title { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
-    public string TargetRole { get; set; } = "student"; // or "faculty", "admin", "all"
-    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public required DbSet<Notification> Notifications { get; set; }
+
 }
-public class NotificationRequest
+public class NotificationResponse
 {
+    public int Id { get; set; }
+    public string Title { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
-    public string TargetRole { get; set; } = "student"; // or "faculty", "admin", "all"
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

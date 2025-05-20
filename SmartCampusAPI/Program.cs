@@ -3,15 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SmartCampusAPI.Data;
+using SmartCampusAPI.Hubs;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ===== Add services to the container =====
-
 // 🔗 Database Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// ✅ SignalR Hub
+builder.Services.AddSignalR();
 
 // 🔐 JWT Auth
 var jwtKey = builder.Configuration["Jwt:Key"];
@@ -71,10 +73,10 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddControllers();
 
+// ✅ Only declare once!
 var app = builder.Build();
 
 // ===== Middleware Pipeline =====
-
 app.UseCors("AllowFrontend");
 
 if (app.Environment.IsDevelopment())
@@ -90,5 +92,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// ✅ Register SignalR hub
+app.MapHub<NotificationHub>("/hub/notifications");
+
 app.Run();
-// ===== End of Program.cs ===== 
+// ===== End of Middleware Pipeline =====
+// ===== End of Program.cs =====
+// This is the main entry point for the application.
+// It sets up the web application, configures services, and runs the application.
+// The application uses ASP.NET Core, Entity Framework Core, SignalR, and JWT authentication.
+// The application is configured to use a SQL Server database, JWT authentication, and CORS for an Angular frontend.
