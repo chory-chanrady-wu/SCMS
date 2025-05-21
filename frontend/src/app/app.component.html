@@ -12,7 +12,7 @@
       <li *ngIf="getRole() === 'admin'"><a routerLink="/admin">Admin</a></li>
       <li *ngIf="getRole() === 'faculty' || getRole() === 'admin'"><a routerLink="/faculty">Faculty</a></li>
       <li *ngIf="getRole() === 'student' || getRole() === 'admin'"><a routerLink="/student">Student</a></li>
-      <li><a routerLink="/profile">Profile</a></li>
+      <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
       <li><a (click)="logout()">Logout</a></li>
     </ul>
   </header>

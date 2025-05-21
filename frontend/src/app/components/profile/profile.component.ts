@@ -1,20 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileService } from '../../services/profile.service';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
+  standalone: true,
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  imports: [CommonModule] // ✅ So *ngIf works
 })
 export class ProfileComponent implements OnInit {
+changePassword() {
+throw new Error('Method not implemented.');
+}
+editProfile() {
+throw new Error('Method not implemented.');
+}
   user: any;
 
-  constructor(private profileService: ProfileService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.profileService.getProfile().subscribe({
-      next: (data) => this.user = data,
-      error: (err) => console.error('Failed to load profile:', err)
+    this.http.get('http://localhost:5086/api/user/me').subscribe({
+      next: (res) => this.user = res,
+      error: (err) => console.error(err)
     });
   }
 }

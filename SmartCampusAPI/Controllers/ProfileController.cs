@@ -1,12 +1,11 @@
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartCampusAPI.Data;
-using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace SmartCampusAPI.Controllers
 {
+    [Authorize] // 🔐 Require JWT token
     [ApiController]
     [Route("api/[controller]")]
     public class ProfileController : ControllerBase
@@ -18,16 +17,14 @@ namespace SmartCampusAPI.Controllers
             _context = context;
         }
 
-        // GET: api/profile
         [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetProfile()
+        public IActionResult GetProfile()
         {
-            var username = User.FindFirstValue(ClaimTypes.Name);
-            if (username == null)
+            var username = User.Identity?.Name;
+            if (string.IsNullOrEmpty(username))
                 return Unauthorized();
 
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
             if (user == null)
                 return NotFound("User not found.");
 
@@ -35,7 +32,9 @@ namespace SmartCampusAPI.Controllers
             {
                 user.Id,
                 user.Username,
-                user.Role
+                user.Email,
+                user.Role,
+                user.ProfilePictureUrl
             });
         }
     }

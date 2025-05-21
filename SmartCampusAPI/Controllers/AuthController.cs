@@ -21,7 +21,6 @@ namespace SmartCampusAPI.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IHubContext<NotificationHub> _hub;
 
-
         public AuthController(IConfiguration config, ApplicationDbContext context, IHubContext<NotificationHub> hub)
         {
             _config = config;
@@ -29,27 +28,16 @@ namespace SmartCampusAPI.Controllers
             _hub = hub;
         }
 
+        // 🔐 Login endpoint
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest login)
         {
-            if (string.IsNullOrEmpty(login.Username) || string.IsNullOrEmpty(login.Password))
-                return BadRequest("Username and password are required");
-
-            // Check if the user exists and verify the password
-            if (string.IsNullOrEmpty(login.Username) || string.IsNullOrEmpty(login.Password))
+            if (string.IsNullOrWhiteSpace(login.Username) || string.IsNullOrWhiteSpace(login.Password))
                 return BadRequest("Username and password are required");
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == login.Username);
-
-            // 🧪 Debug output
-            Console.WriteLine("Received Username: " + login.Username);
-            Console.WriteLine("Received Password: " + login.Password);
-            Console.WriteLine("Found DB Hash: " + user?.PasswordHash);
-            Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("admin"));
-            Console.WriteLine("BCrypt result: " + BCrypt.Net.BCrypt.Verify(login.Password, user?.PasswordHash ?? ""));
-
             if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash))
-            return Unauthorized("Invalid credentials");
+                return Unauthorized("Invalid credentials");
 
             var token = GenerateJwtToken(user);
             var refreshToken = GenerateRefreshToken();
@@ -66,6 +54,8 @@ namespace SmartCampusAPI.Controllers
                 user.Role
             });
         }
+
+        // 🔁 Refresh token
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
         {
@@ -89,6 +79,8 @@ namespace SmartCampusAPI.Controllers
                 refreshToken = newRefresh
             });
         }
+
+        // 🔔 Admin sends real-time notification
         [HttpPost("send")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SendNotification([FromBody] string message)
@@ -97,6 +89,7 @@ namespace SmartCampusAPI.Controllers
             return Ok(new { status = "sent", message });
         }
 
+        // 🔑 JWT creation helper
         private string GenerateJwtToken(User user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
@@ -107,6 +100,7 @@ namespace SmartCampusAPI.Controllers
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role)
             };
+
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
@@ -118,6 +112,7 @@ namespace SmartCampusAPI.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        // 🔁 Refresh token generator
         private string GenerateRefreshToken()
         {
             var randomBytes = new byte[64];

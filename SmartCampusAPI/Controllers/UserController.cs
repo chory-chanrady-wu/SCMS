@@ -22,7 +22,8 @@ namespace SmartCampusAPI.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _context.Users
-                .Select(u => new {
+                .Select(u => new
+                {
                     u.Id,
                     u.Username,
                     u.Role
@@ -67,5 +68,18 @@ namespace SmartCampusAPI.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var username = User.Identity?.Name;
+            if (username == null) return Unauthorized();
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user == null) return NotFound();
+
+            return Ok(user);
+        }
+
     }
 }

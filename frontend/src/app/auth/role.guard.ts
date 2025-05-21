@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -7,17 +7,16 @@ import { CanActivate, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/r
 export class RoleGuard implements CanActivate {
   constructor(private router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree {
-    const allowedRoles: string[] = route.data['roles'] || [];
-    const userRole = localStorage.getItem('role');
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    const expectedRoles = route.data['roles'] as string[];
+    const currentRole = localStorage.getItem('role');
 
-    if (!userRole) return this.router.parseUrl('/login');
-
-    if (allowedRoles.length === 0 || allowedRoles.includes(userRole) || userRole === 'admin') {
+    if (expectedRoles.includes(currentRole!)) {
       return true;
     }
 
-    // Block access and redirect
-    return this.router.parseUrl('/home');
+    // Optional: Redirect to home
+    this.router.navigate(['/home']);
+    return false;
   }
 }

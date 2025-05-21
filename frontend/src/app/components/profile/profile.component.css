@@ -1,15 +1,11 @@
 .profile-container {
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 2rem;
-  border-radius: 10px;
-  max-width: 400px;
-  margin: 2rem auto;
-  text-align: left;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  padding: 20px;
 }
-
-.pending {
-  color: #d35400;
-  font-weight: bold;
-  margin-top: 1rem;
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
 }

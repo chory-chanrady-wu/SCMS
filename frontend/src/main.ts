@@ -11,7 +11,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(appRoutes),
     provideHttpClient(
-      withInterceptors([AuthInterceptor]) // ✅ use this
+    withInterceptors([AuthInterceptor]) // ✅ use this
     ),
     importProvidersFrom(FormsModule)
   ]

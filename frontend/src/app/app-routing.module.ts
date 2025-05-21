@@ -14,7 +14,7 @@ export const appRoutes: Routes = [
   
   {
     path: 'profile',
-    loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule)
+    loadComponent: () => import('./components/profile/profile.component').then(m => m.ProfileComponent)
   },
   {
     path: 'admin',
